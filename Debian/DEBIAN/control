@@ -1,0 +1,6 @@
+Package: hitokoto
+Maintainer: Tomomichi Sugihara <zhidao@ieee.org>
+Architecture: all
+Version: 1.0-1
+Description: One-comment fortune-teller
+ hitokoto puts a randomly chosen comment on Gnome-shell.

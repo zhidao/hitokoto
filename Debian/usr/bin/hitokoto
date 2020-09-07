@@ -1,0 +1,32 @@
+#!/bin/sh
+
+DIR=$HOME/.hitokoto
+if [ ! -d $DIR ]; then
+    DIR=/etc/hitokoto
+fi
+
+DAT=$DIR/hitokoto.dat
+if [ ! -r $DAT ]; then
+    echo "hitokoto message file unfound."
+    exit 1
+fi
+
+if [ $1 ]; then
+    WAITHOUR=`expr $1`
+    if [ $WAITHOUR -le 0 ]; then
+	WAITHOUR=1
+    fi
+else
+    WAITHOUR=1
+fi
+
+while :
+do
+    NUM=$((`od -An -N2 -tu < /dev/random` % `cat $DAT | wc -l --` + 1))
+    LINE=`head -n $NUM $DAT | tail -n 1`
+    PNT=`echo $LINE | cut -d " " -f 1`
+    MSG=`echo $LINE | cut -d " " -f 2`
+    WHO=`echo $LINE | cut -d " " -f 3`
+    notify-send -u low -t 3000 "$MSG" "$WHO (...$PNT point)"
+    sleep `expr $WAITHOUR '*' 3600`
+done
