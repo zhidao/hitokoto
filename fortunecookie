@@ -1,0 +1,25 @@
+#!/bin/sh
+
+DIR=Debian/etc/hitokoto
+DAT=$DIR/hitokoto.dat
+if [ ! -r $DAT ]; then
+    echo "hitokoto message file unfound."
+    exit 1
+fi
+
+COOKIE=fortunes
+
+cat $DAT | while read LINE
+do
+    PNT=`echo $LINE | cut -d " " -f 1`
+    MSG=`echo $LINE | cut -d " " -f 2`
+    WHO=`echo $LINE | cut -d " " -f 3`
+    echo "$MSG" >> $COOKIE
+    echo "\t$WHO (...$PNT point)" >> $COOKIE
+    echo "%" >> $COOKIE
+done
+
+strfile $COOKIE
+mv $COOKIE $COOKIE.dat $DIR/fortunes/
+
+exit 0
